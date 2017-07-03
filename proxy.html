@@ -1,0 +1,64 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>刻意练习-用JS讲故事</title>
+</head>
+<body>
+  <script>
+    /*作者：曹杰
+     *时间：2017年7月3号
+     *实现代理模式，在对象执行之前，由其代理对象代为执行，实现深入的交互功能
+     */
+     //js构建类,注意良好的编程风格
+     var Flower = function (type, price){
+       //创建属性
+       this.type = type;
+       this.price = price;
+     };
+     //给Flower类添加buy方法
+     Flower.prototype.buy = function (){
+       console.log("您购买了" + this.type + "请付：" + this.price +"元");
+     };
+     var flower = new Flower("玫瑰", 99);
+     flower.buy();
+     //对象字面量（送花）
+     var lichuangfeng = {
+       name: "李闯锋",
+       age: 21,
+       city: "宜春",
+       sendFlower: function (target){
+         target.receiveFlower();
+       }
+     };
+     //对象字面量（接收花）
+     var pty = {
+       name: "xxx",
+       age: 20,
+       receiveFlower: function (){
+         console.log('收到了花');
+       },
+       listenGoodMood: function (fn){
+         console.log("心情不好！");
+         //推迟5秒执行function(){}函数
+         setTimeout(function (){
+           console.log("心情好了，该约的约！");
+           fn();
+         }, 5000);
+       }
+     }
+     //对象字面量（传递花），和目标对象实现了同样的方法（接口） ，可以替换对象来执行
+     var xiaohong = {
+       name: "小红",
+       nickname: "送花使者",
+       //接口
+       receiveFlower: function (){
+         pty.listenGoodMood(function (){
+           pty.receiveFlower();
+         });
+       }
+     }
+     lichuangfeng.sendFlower(xiaohong);
+  </script>
+</body>
+</html>
